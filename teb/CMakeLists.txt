@@ -24,6 +24,8 @@ include_directories(src)
 #include_directories(../CRoaring/include)
 
 
+include_directories(SYSTEM /usr/local/include)
+
 include_directories(../) #TODO remove
 
 include_directories(./)
