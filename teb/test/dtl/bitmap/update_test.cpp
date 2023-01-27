@@ -7,18 +7,18 @@
 // Tests for the differential update feature.
 //===----------------------------------------------------------------------===//
 using updatable_types_under_test = ::testing::Types<
-    part_8_teb,
-    part_8_wah,
-    part_8_upfwd_wah,
-    part_8_upfwd_diff_teb,
-    
-    part_run_8_teb,
-    roaring_bitmap,
-    wah,
-    position_list_32,
-    part_position_list_8,
-    part_position_list_16
->;
+                                   part_8_teb,
+                                   part_8_wah,
+                                   part_8_upfwd_wah,
+                                   part_8_upfwd_diff_teb,
+
+                                   part_run_8_teb,
+                                   roaring_bitmap,
+                                   wah,
+                                   position_list_32,
+                                   part_position_list_8,
+                                   part_position_list_16
+                                   >;
 //===----------------------------------------------------------------------===//
 // Fixture for the parameterized test case.
 template<typename T>
@@ -27,7 +27,8 @@ TYPED_TEST_CASE(update_test, updatable_types_under_test);
 //===----------------------------------------------------------------------===//
 /// Sets all bits in 'dst' that are set in 'src'.
 template<typename T>
-void set(T& dst, const dtl::bitmap& src) {
+void set(T& dst, const dtl::bitmap& src)
+{
   auto i = src.find_first();
   while (i != boost::dynamic_bitset<$u32>::npos) {
     dst.set(i, true);
@@ -37,7 +38,8 @@ void set(T& dst, const dtl::bitmap& src) {
 //===----------------------------------------------------------------------===//
 /// Clears all bits in 'dst' that are set in 'src'.
 template<typename T>
-void clear(T& dst, const dtl::bitmap& src) {
+void clear(T& dst, const dtl::bitmap& src)
+{
   auto i = src.find_first();
   while (i != boost::dynamic_bitset<$u32>::npos) {
     dst.set(i, false);
@@ -46,7 +48,8 @@ void clear(T& dst, const dtl::bitmap& src) {
 }
 //===----------------------------------------------------------------------===//
 /// Test inserts on an initially empty bitmap.
-TYPED_TEST(update_test, insert_on_empty_bitmap) {
+TYPED_TEST(update_test, insert_on_empty_bitmap)
+{
   using T = TypeParam;
   const auto LEN = 8;
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -70,7 +73,8 @@ TYPED_TEST(update_test, insert_on_empty_bitmap) {
 }
 //===----------------------------------------------------------------------===//
 /// Apply changes (inserts and deletes) to a bitmap.
-TYPED_TEST(update_test, insert_and_delete) {
+TYPED_TEST(update_test, insert_and_delete)
+{
   using T = TypeParam;
   const auto LEN = 8;
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -95,7 +99,8 @@ TYPED_TEST(update_test, insert_and_delete) {
 }
 //===----------------------------------------------------------------------===//
 /// Randomized test for updates (using varying bitmap sizes).
-TYPED_TEST(update_test, random_updates) {
+TYPED_TEST(update_test, random_updates)
+{
   using T = TypeParam;
 
   for (auto len = 1024; len <= 8192 * 2; len *= 2) {

@@ -10,35 +10,35 @@
 // Tests for the differential update feature.
 //===----------------------------------------------------------------------===//
 template<
-    typename BitmapType,
-    typename DiffType,
-    template<typename B, typename D> typename MergeType>
+  typename BitmapType,
+  typename DiffType,
+  template<typename B, typename D> typename MergeType>
 struct TestSetting {
   using type = dtl::diff<BitmapType, DiffType>;
   using merge_type = MergeType<BitmapType, DiffType>;
 };
 //===----------------------------------------------------------------------===//
 using diff_types_under_test = ::testing::Types<
-    // Naive merge.
-    TestSetting<teb_v2, roaring_bitmap, dtl::merge_naive>,
-    TestSetting<teb_v2, wah, dtl::merge_naive>,
-    TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_naive>,
-    TestSetting<roaring_bitmap, wah, dtl::merge_naive>,
-    TestSetting<wah, roaring_bitmap, dtl::merge_naive>,
-    TestSetting<wah, wah, dtl::merge_naive>,
-    // Naive merge (using the run iterator).
-    TestSetting<teb_v2, roaring_bitmap, dtl::merge_naive_iter>,
-    TestSetting<teb_v2, wah, dtl::merge_naive_iter>,
-    TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_naive_iter>,
-    TestSetting<roaring_bitmap, wah, dtl::merge_naive_iter>,
-    TestSetting<wah, roaring_bitmap, dtl::merge_naive_iter>,
-    TestSetting<wah, wah, dtl::merge_naive_iter>,
-    // In-place merge.
-    TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_inplace>,
-    TestSetting<wah, wah, dtl::merge_inplace>,
-    // Tree-based merge (TEB only).
-    TestSetting<teb_v2, roaring_bitmap, dtl::merge_tree>,
-    TestSetting<teb_v2, wah, dtl::merge_tree>>;
+                              // Naive merge.
+                              TestSetting<teb_v2, roaring_bitmap, dtl::merge_naive>,
+                              TestSetting<teb_v2, wah, dtl::merge_naive>,
+                              TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_naive>,
+                              TestSetting<roaring_bitmap, wah, dtl::merge_naive>,
+                              TestSetting<wah, roaring_bitmap, dtl::merge_naive>,
+                              TestSetting<wah, wah, dtl::merge_naive>,
+                              // Naive merge (using the run iterator).
+                              TestSetting<teb_v2, roaring_bitmap, dtl::merge_naive_iter>,
+                              TestSetting<teb_v2, wah, dtl::merge_naive_iter>,
+                              TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_naive_iter>,
+                              TestSetting<roaring_bitmap, wah, dtl::merge_naive_iter>,
+                              TestSetting<wah, roaring_bitmap, dtl::merge_naive_iter>,
+                              TestSetting<wah, wah, dtl::merge_naive_iter>,
+                              // In-place merge.
+                              TestSetting<roaring_bitmap, roaring_bitmap, dtl::merge_inplace>,
+                              TestSetting<wah, wah, dtl::merge_inplace>,
+                              // Tree-based merge (TEB only).
+                              TestSetting<teb_v2, roaring_bitmap, dtl::merge_tree>,
+                              TestSetting<teb_v2, wah, dtl::merge_tree>>;
 //===----------------------------------------------------------------------===//
 // Fixture for the parameterized test case.
 template<typename T>
@@ -47,7 +47,8 @@ TYPED_TEST_CASE(diff_test, diff_types_under_test);
 //===----------------------------------------------------------------------===//
 /// Sets all bits in 'dst' that are set in 'src'.
 template<typename T>
-void set(T& dst, const dtl::bitmap& src) {
+void set(T& dst, const dtl::bitmap& src)
+{
   auto i = src.find_first();
   while (i != boost::dynamic_bitset<$u32>::npos) {
     dst.set(i, true);
@@ -57,7 +58,8 @@ void set(T& dst, const dtl::bitmap& src) {
 //===----------------------------------------------------------------------===//
 /// Clears all bits in 'dst' that are set in 'src'.
 template<typename T>
-void clear(T& dst, const dtl::bitmap& src) {
+void clear(T& dst, const dtl::bitmap& src)
+{
   auto i = src.find_first();
   while (i != boost::dynamic_bitset<$u32>::npos) {
     dst.set(i, false);
@@ -66,7 +68,8 @@ void clear(T& dst, const dtl::bitmap& src) {
 }
 //===----------------------------------------------------------------------===//
 /// Test inserts on an initially empty bitmap.
-TYPED_TEST(diff_test, insert_on_empty_bitmap) {
+TYPED_TEST(diff_test, insert_on_empty_bitmap)
+{
   using T = typename TypeParam::type;
   const auto LEN = 8;
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -90,7 +93,8 @@ TYPED_TEST(diff_test, insert_on_empty_bitmap) {
 }
 //===----------------------------------------------------------------------===//
 /// Apply changes (inserts and deletes) to a bitmap.
-TYPED_TEST(diff_test, insert_and_delete) {
+TYPED_TEST(diff_test, insert_and_delete)
+{
   using T = typename TypeParam::type;
   const auto LEN = 8;
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -115,7 +119,8 @@ TYPED_TEST(diff_test, insert_and_delete) {
 }
 //===----------------------------------------------------------------------===//
 // Apply and merge changes.
-TYPED_TEST(diff_test, merge) {
+TYPED_TEST(diff_test, merge)
+{
   using T = typename TypeParam::type;
   const auto LEN = 8;
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -152,7 +157,8 @@ TYPED_TEST(diff_test, merge) {
 }
 //===----------------------------------------------------------------------===//
 /// Randomized test for differential updates (using varying bitmap sizes).
-TYPED_TEST(diff_test, random_updates) {
+TYPED_TEST(diff_test, random_updates)
+{
   using T = typename TypeParam::type;
 
   for (auto len = 1024; len <= 8192 * 2; len *= 2) {

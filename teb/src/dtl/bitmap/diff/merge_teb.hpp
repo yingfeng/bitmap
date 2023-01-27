@@ -19,40 +19,37 @@ namespace dtl
 /// representation) and apply the updates there. Afterwards, the bitmap tree
 /// is transformed back to a TEB.
 template<
-    /// The (compressed) bitmap type.
-    typename B,
-    /// The differential data structure to use.
-    typename D>
-struct merge_tree
-{
-    void __attribute__((noinline))
-    merge(std::unique_ptr<B>& bitmap, std::unique_ptr<D>& diff)
-    {
-        // Decompress the TEB into a bitmap tree.
-        dtl::mutable_bitmap_tree<> mbt(*(bitmap->teb_));
-        // Read the diff.
-        auto it = diff->scan_it();
-        while (!it.end())
-        {
-            const auto b = it.pos();
-            const auto e = it.length() + b;
-            for (std::size_t i = b; i < e; ++i)
-            {
-                mbt.toggle(i); // TODO implement range-toggle
-            }
-            it.next();
-        }
-
-        // Re-compress the bitmap.
-        auto updated_bitmap = std::make_unique<B>(std::move(mbt));
-        std::swap(bitmap, updated_bitmap);
+  /// The (compressed) bitmap type.
+  typename B,
+  /// The differential data structure to use.
+  typename D>
+struct merge_tree {
+  void __attribute__((noinline))
+  merge(std::unique_ptr<B>& bitmap, std::unique_ptr<D>& diff)
+  {
+    // Decompress the TEB into a bitmap tree.
+    dtl::mutable_bitmap_tree<> mbt(*(bitmap->teb_));
+    // Read the diff.
+    auto it = diff->scan_it();
+    while (!it.end()) {
+      const auto b = it.pos();
+      const auto e = it.length() + b;
+      for (std::size_t i = b; i < e; ++i) {
+        mbt.toggle(i); // TODO implement range-toggle
+      }
+      it.next();
     }
 
-    static std::string
-    name()
-    {
-        return "tree_merge";
-    }
+    // Re-compress the bitmap.
+    auto updated_bitmap = std::make_unique<B>(std::move(mbt));
+    std::swap(bitmap, updated_bitmap);
+  }
+
+  static std::string
+  name()
+  {
+    return "tree_merge";
+  }
 };
 //===----------------------------------------------------------------------===//
 } // namespace dtl

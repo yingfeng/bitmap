@@ -17,7 +17,8 @@ class api_run_iterator_test : public ::testing::Test {};
 TYPED_TEST_CASE(api_run_iterator_test, types_under_test);
 // TODO test skip iterator and scan iterator explicitly
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_test, all_bits_set) {
+TYPED_TEST(api_run_iterator_test, all_bits_set)
+{
   using T = TypeParam;
   dtl::bitmap b(64);
   b.set();
@@ -26,7 +27,8 @@ TYPED_TEST(api_run_iterator_test, all_bits_set) {
   ASSERT_EQ(b, actual);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_test, no_bits_set) {
+TYPED_TEST(api_run_iterator_test, no_bits_set)
+{
   using T = TypeParam;
   dtl::bitmap b(64);
   T t(b);
@@ -34,7 +36,8 @@ TYPED_TEST(api_run_iterator_test, no_bits_set) {
   ASSERT_EQ(b, actual);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_test, single_1fill) {
+TYPED_TEST(api_run_iterator_test, single_1fill)
+{
   using T = TypeParam;
   dtl::bitmap b(64, 0b11110000);
   T t(b);
@@ -42,7 +45,8 @@ TYPED_TEST(api_run_iterator_test, single_1fill) {
   ASSERT_EQ(b, actual);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_test, multiple_1fills_at_different_levels) {
+TYPED_TEST(api_run_iterator_test, multiple_1fills_at_different_levels)
+{
   using T = TypeParam;
   dtl::bitmap b(64, 0b0011000011110000);
   T t(b);

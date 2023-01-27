@@ -13,17 +13,16 @@ namespace dtl
 namespace simd
 {
 
-struct bitwidth
-{
-    static const u64
+struct bitwidth {
+  static const u64
 #ifdef __AVX512F__
-    value = 512;
+  value = 512;
 #elif __AVX2__
-    value = 256;
+  value = 256;
 #elif __SSE2__
-    value = 128; // TODO reset to 128
+  value = 128; // TODO reset to 128
 #else
-    value = 256; // emulated
+  value = 256; // emulated
 #endif
 };
 
@@ -39,12 +38,10 @@ static constexpr u64 lane_count = bitwidth::value / (sizeof(T) * 8);
 
 
 template<typename T>
-struct lane
-{
-    enum : u64
-    {
-        count = bitwidth::value / (sizeof(T) * 8)
-    };
+struct lane {
+  enum : u64 {
+    count = bitwidth::value / (sizeof(T) * 8)
+  };
 };
 
 } // namespace simd

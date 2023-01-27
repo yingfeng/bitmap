@@ -19,7 +19,8 @@ TYPED_TEST_CASE(api_run_iterator_skip_test, types_under_test);
 //===----------------------------------------------------------------------===//
 template<typename T>
 void skip_test(u64 n, u64 bitmap, u64 skip_to_pos,
-    u64 expected_pos, u64 expected_len) {
+               u64 expected_pos, u64 expected_len)
+{
   assert(n <= 64);
   std::stringstream info;
   info << "skip test: n=" << n
@@ -36,8 +37,7 @@ void skip_test(u64 n, u64 bitmap, u64 skip_to_pos,
   it.skip_to(skip_to_pos);
   if (expected_len == 0) {
     ASSERT_TRUE(it.end()) << info.str();
-  }
-  else {
+  } else {
     ASSERT_TRUE(!it.end()) << info.str();
     ASSERT_EQ(it.pos(), expected_pos) << info.str();
   }
@@ -46,7 +46,8 @@ void skip_test(u64 n, u64 bitmap, u64 skip_to_pos,
   }
 }
 
-TYPED_TEST(api_run_iterator_skip_test, skip_to_1fill) {
+TYPED_TEST(api_run_iterator_skip_test, skip_to_1fill)
+{
   using T = TypeParam;
   skip_test<T>(8, 0b00000101, 2, 2, 1);
   skip_test<T>(8, 0b00001001, 3, 3, 1);
@@ -56,13 +57,15 @@ TYPED_TEST(api_run_iterator_skip_test, skip_to_1fill) {
   skip_test<T>(8, 0b10000001, 7, 7, 1);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_to_1fill_passing_the_root_node) {
+TYPED_TEST(api_run_iterator_skip_test, skip_to_1fill_passing_the_root_node)
+{
   using T = TypeParam;
   skip_test<T>(8, 0b01000001, 6, 6, 1);
   skip_test<T>(8, 0b10000001, 7, 7, 1);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_before_1fill) {
+TYPED_TEST(api_run_iterator_skip_test, skip_before_1fill)
+{
   using T = TypeParam;
   skip_test<T>(8, 0b01000001, 5, 6, 1);
   skip_test<T>(8, 0b01000001, 4, 6, 1);
@@ -71,17 +74,20 @@ TYPED_TEST(api_run_iterator_skip_test, skip_before_1fill) {
   skip_test<T>(8, 0b01000001, 1, 6, 1);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_beyond_last_1fill) {
+TYPED_TEST(api_run_iterator_skip_test, skip_beyond_last_1fill)
+{
   using T = TypeParam;
   skip_test<T>(8, 0b01000001, 7, 8, 0);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_into_a_1fill) {
+TYPED_TEST(api_run_iterator_skip_test, skip_into_a_1fill)
+{
   using T = TypeParam;
   skip_test<T>(8, 0b11111101, 6, 6, 2);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_multiple_times) {
+TYPED_TEST(api_run_iterator_skip_test, skip_multiple_times)
+{
   using T = TypeParam;
   dtl::bitmap b(8, 0b11001101);
   T tm(b);
@@ -94,14 +100,16 @@ TYPED_TEST(api_run_iterator_skip_test, skip_multiple_times) {
   //  ASSERT_EQ(it.length(), 2);
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_into_a_1fill_length_one) {
+TYPED_TEST(api_run_iterator_skip_test, skip_into_a_1fill_length_one)
+{
   using T = TypeParam;
   skip_test<T>(16, 0b1100000110001111, 6, 7, 1);
 }
 //===----------------------------------------------------------------------===//
 template<typename T>
 void skip_next_test(u64 n, u64 bitmap, u64 skip_to_pos,
-    u64 expected_pos, u64 expected_len) {
+                    u64 expected_pos, u64 expected_len)
+{
   assert(n <= 64);
   std::stringstream info;
   info << "skip/next test: n=" << n
@@ -118,8 +126,7 @@ void skip_next_test(u64 n, u64 bitmap, u64 skip_to_pos,
   it.next();
   if (expected_len == 0) {
     ASSERT_TRUE(it.end()) << info.str();
-  }
-  else {
+  } else {
     ASSERT_TRUE(!it.end()) << info.str();
   }
   ASSERT_EQ(it.pos(), expected_pos) << info.str();
@@ -128,7 +135,8 @@ void skip_next_test(u64 n, u64 bitmap, u64 skip_to_pos,
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_run_iterator_skip_test, skip_next) {
+TYPED_TEST(api_run_iterator_skip_test, skip_next)
+{
   using T = TypeParam;
   skip_next_test<T>(8, 0b00010101, 2, 4, 1);
   skip_next_test<T>(8, 0b00100101, 2, 5, 1);

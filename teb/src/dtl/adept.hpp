@@ -39,9 +39,9 @@ using $f64 = double;
 /// compile-time constant to determine whether CUDA support is available
 constexpr u1 has_cuda_support =
 #if defined(HAVE_CUDA)
-    true;
+  true;
 #else
-    false;
+  false;
 #endif
 
 
@@ -59,39 +59,35 @@ struct make_integer_sequence<0, Ints...> : integer_sequence<Ints...> {};
 /// determine the type of elements stored in an (plain old) array
 /// note: see also 'std::tuple_element<std::array>', which is kind of similar
 template<class T>
-struct array_info
-{
-    static constexpr u1 is_array = false;
-    static constexpr u1 is_std_array = false;
-    static constexpr u64 length = 0;
-    using value_type = void;
+struct array_info {
+  static constexpr u1 is_array = false;
+  static constexpr u1 is_std_array = false;
+  static constexpr u64 length = 0;
+  using value_type = void;
 };
 
 template<class T>
-struct array_info<T[]>
-{
-    static constexpr u1 is_array = true;
-    static constexpr u1 is_std_array = false;
-    static constexpr u64 length = std::extent<T>::value;
-    using value_type = T;
+struct array_info<T[]> {
+  static constexpr u1 is_array = true;
+  static constexpr u1 is_std_array = false;
+  static constexpr u64 length = std::extent<T>::value;
+  using value_type = T;
 };
 
 template<typename T, u64 N>
-struct array_info<T[N]>
-{
-    static constexpr u1 is_array = true;
-    static constexpr u1 is_std_array = false;
-    static constexpr u64 length = N;
-    using value_type = T;
+struct array_info<T[N]> {
+  static constexpr u1 is_array = true;
+  static constexpr u1 is_std_array = false;
+  static constexpr u64 length = N;
+  using value_type = T;
 };
 
 template<typename T, u64 N>
-struct array_info<std::array<T, N>>
-{
-    static constexpr u1 is_array = true;
-    static constexpr u1 is_std_array = true;
-    static constexpr u64 length = N;
-    using value_type = T;
+struct array_info<std::array<T, N>> {
+  static constexpr u1 is_array = true;
+  static constexpr u1 is_std_array = true;
+  static constexpr u64 length = N;
+  using value_type = T;
 };
 
 
@@ -166,39 +162,35 @@ namespace std
 {
 
 template<typename T>
-struct bit_shift_left
-{
-    constexpr T operator()(const T &lhs, const T &rhs) const
-    {
-        return lhs << rhs;
-    }
+struct bit_shift_left {
+  constexpr T operator()(const T &lhs, const T &rhs) const
+  {
+    return lhs << rhs;
+  }
 };
 
 template<typename T>
-struct bit_shift_right
-{
-    constexpr T operator()(const T &lhs, const T &rhs) const
-    {
-        return lhs >> rhs;
-    }
+struct bit_shift_right {
+  constexpr T operator()(const T &lhs, const T &rhs) const
+  {
+    return lhs >> rhs;
+  }
 };
 
 template<typename T>
-struct post_increment
-{
-    constexpr T operator()(const T &lhs) const
-    {
-        return lhs++;
-    }
+struct post_increment {
+  constexpr T operator()(const T &lhs) const
+  {
+    return lhs++;
+  }
 };
 
 template<typename T>
-struct post_decrement
-{
-    constexpr T operator()(const T &lhs) const
-    {
-        return lhs--;
-    }
+struct post_decrement {
+  constexpr T operator()(const T &lhs) const
+  {
+    return lhs--;
+  }
 };
 
 }
@@ -209,85 +201,71 @@ struct post_decrement
 template<class T>
 auto operator<<(std::ostream& os, const T& t) -> decltype(t.print(os), os)
 {
-    t.print(os);
-    return os;
+  t.print(os);
+  return os;
 }
 
 template<size_t n>
 void print(const std::bitset<n>& b)
 {
-    for (size_t i = 0; i < n; i++)
-    {
-        std::cout << b[i];
-    }
-    std::cout << std::endl;
+  for (size_t i = 0; i < n; i++) {
+    std::cout << b[i];
+  }
+  std::cout << std::endl;
 }
 
 template<size_t n>
 void print(const std::bitset<n>& b, const size_t l)
 {
-    const size_t x = 1 << l;
-    for (size_t i = 0; i < n; i++)
-    {
-        if (i % x == 0)
-        {
-            std::cout << b[i];
-        }
-        else
-        {
-            std::cout << "_";
-        }
+  const size_t x = 1 << l;
+  for (size_t i = 0; i < n; i++) {
+    if (i % x == 0) {
+      std::cout << b[i];
+    } else {
+      std::cout << "_";
     }
-    std::cout << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 template<typename T>
 void print(const std::vector<T>& v, const size_t l)
 {
-    const size_t x = 1 << l;
-    for (size_t i = 0; i < v.size(); i++)
-    {
-        if (i % x == 0)
-        {
+  const size_t x = 1 << l;
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i % x == 0) {
 //      std::cout << v[v.size() - (i + 1)] << ", ";
-            std::cout << v[i] << ", ";
-        }
-        else
-        {
-            std::cout << "_, ";
-        }
+      std::cout << v[i] << ", ";
+    } else {
+      std::cout << "_, ";
     }
-    std::cout << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 static void print(const std::vector<bool>& v, const size_t l)
 {
-    const size_t x = 1 << l;
-    for (size_t i = 0; i < v.size(); i++)
-    {
-        if (i % x == 0)
-        {
-            std::cout << v[i];
-        }
-        else
-        {
-            std::cout << "_, ";
-        }
+  const size_t x = 1 << l;
+  for (size_t i = 0; i < v.size(); i++) {
+    if (i % x == 0) {
+      std::cout << v[i];
+    } else {
+      std::cout << "_, ";
     }
-    std::cout << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 
 static void
 print(const std::vector<bool>& v)
 {
-    if (v.size() == 0) return;
-    std::cout << (v[0] ? "1" : "0");
-    for (size_t i = 1; i < v.size(); i++)
-    {
-        std::cout << "" << (v[i] ? "1" : "0");
-    }
-    std::cout << std::endl;
+  if (v.size() == 0) return;
+  std::cout << (v[0] ? "1" : "0");
+  for (size_t i = 1; i < v.size(); i++) {
+    std::cout << "" << (v[i] ? "1" : "0");
+  }
+  std::cout << std::endl;
 }
 
 

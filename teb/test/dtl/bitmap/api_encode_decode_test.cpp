@@ -17,7 +17,8 @@ class api_encode_decode_test : public ::testing::Test {};
 TYPED_TEST_CASE(api_encode_decode_test, types_under_test);
 //===----------------------------------------------------------------------===//
 // Encode, decode, and compare the results.
-TYPED_TEST(api_encode_decode_test, encode_decode_0_to_255) {
+TYPED_TEST(api_encode_decode_test, encode_decode_0_to_255)
+{
   using T = TypeParam;
 
   for (auto i = 0; i < (1u << LEN); ++i) {
@@ -33,7 +34,8 @@ TYPED_TEST(api_encode_decode_test, encode_decode_0_to_255) {
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_encode_decode_test, encode_decode_0_to_65536) {
+TYPED_TEST(api_encode_decode_test, encode_decode_0_to_65536)
+{
   using T = TypeParam;
   constexpr std::size_t LEN = 16;
 
@@ -49,7 +51,8 @@ TYPED_TEST(api_encode_decode_test, encode_decode_0_to_65536) {
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_set_bit) {
+TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_set_bit)
+{
   using T = TypeParam;
   constexpr std::size_t LEN = 1ull << 10;
 
@@ -66,7 +69,8 @@ TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_set_bit) 
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_unset_bit) {
+TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_unset_bit)
+{
   using T = TypeParam;
   constexpr std::size_t LEN = 1ull << 10;
 
@@ -85,7 +89,8 @@ TYPED_TEST(api_encode_decode_test, encode_decode_bitmaps_with_a_single_unset_bit
 }
 //===----------------------------------------------------------------------===//
 TYPED_TEST(api_encode_decode_test,
-    encode_decode_bitmaps_with_the_lsb_and_msb_set_and_single_bit_in_between) {
+           encode_decode_bitmaps_with_the_lsb_and_msb_set_and_single_bit_in_between)
+{
   using T = TypeParam;
   constexpr std::size_t LEN = 1ull << 6;
 
@@ -106,7 +111,8 @@ TYPED_TEST(api_encode_decode_test,
 //===----------------------------------------------------------------------===//
 // Encode, decode, and compare the results (varying bitmap sizes).
 TYPED_TEST(api_encode_decode_test,
-    encode_decode_varying_bitmap_sizes) {
+           encode_decode_varying_bitmap_sizes)
+{
   using T = TypeParam;
 
   for (auto len = 128; len <= 1024; len *= 2) {
@@ -155,7 +161,8 @@ TYPED_TEST(api_encode_decode_test,
 // Encode, decode, and compare the results (varying bitmap sizes, where the
 // bitmap sizes are NOT powers of two).
 TYPED_TEST(api_encode_decode_test,
-    encode_decode_varying_bitmap_sizes_non_pow2) {
+           encode_decode_varying_bitmap_sizes_non_pow2)
+{
   using T = TypeParam;
 
   for (auto len = 111; len <= 800000; len *= 2) {

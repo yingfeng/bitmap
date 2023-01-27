@@ -6,7 +6,8 @@
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_and(const T& bitmap_a, const T& bitmap_b) {
+bitwise_and(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto it_a = bitmap_a.scan_it();
   auto it_b = bitmap_b.it();
@@ -34,12 +35,10 @@ bitwise_and(const T& bitmap_a, const T& bitmap_b) {
       if (b_end <= a_end) {
         it_b.next();
       }
-    }
-    else {
+    } else {
       if (a_end < b_end) {
         it_a.skip_to(b_begin);
-      }
-      else {
+      } else {
         it_b.skip_to(a_begin);
       }
     }
@@ -49,7 +48,8 @@ bitwise_and(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_and_iter(const T& bitmap_a, const T& bitmap_b) {
+bitwise_and_iter(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto and_it = dtl::bitwise_and_it(bitmap_a.scan_it(), bitmap_b.it());
 //  auto it_a = bitmap_a.scan_it();
@@ -70,7 +70,8 @@ bitwise_and_iter(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_or(const T& bitmap_a, const T& bitmap_b) {
+bitwise_or(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto it_a = bitmap_a.scan_it();
   auto it_b = bitmap_b.it();
@@ -95,8 +96,7 @@ bitwise_or(const T& bitmap_a, const T& bitmap_b) {
       }
       it_a.skip_to(end_max); // TODO not sure if that is the most efficient way
       it_b.skip_to(end_max);
-    }
-    else {
+    } else {
       if (a_end < b_begin) {
         // Produce an output.
         for (std::size_t i = a_begin; i < a_end; ++i) {
@@ -105,8 +105,7 @@ bitwise_or(const T& bitmap_a, const T& bitmap_b) {
           ret_val[i] = true;
         }
         it_a.next();
-      }
-      else if (b_end < a_begin) {
+      } else if (b_end < a_begin) {
         for (std::size_t i = b_begin; i < b_end; ++i) {
           // Make sure, no bits are set more than once.
           assert(ret_val[i] == false);
@@ -137,7 +136,8 @@ bitwise_or(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_or_iter(const T& bitmap_a, const T& bitmap_b) {
+bitwise_or_iter(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto or_it = dtl::bitwise_or_it(bitmap_a.scan_it(), bitmap_b.it());
 //  auto it_a = bitmap_a.scan_it();
@@ -158,7 +158,8 @@ bitwise_or_iter(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_xor(const T& bitmap_a, const T& bitmap_b) {
+bitwise_xor(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto it_a = bitmap_a.scan_it();
   auto it_b = bitmap_b.it();
@@ -185,17 +186,14 @@ bitwise_xor(const T& bitmap_a, const T& bitmap_b) {
       if (a_end < b_end) {
         it_a.next();
         it_b.skip_to(a_end);
-      }
-      else if (b_end < a_end) {
+      } else if (b_end < a_end) {
         it_b.next();
         it_a.skip_to(b_end);
-      }
-      else {
+      } else {
         it_a.next();
         it_b.next();
       }
-    }
-    else {
+    } else {
       if (a_end < b_begin) {
         // Produce an output.
         for (std::size_t i = a_begin; i < a_end; ++i) {
@@ -205,8 +203,7 @@ bitwise_xor(const T& bitmap_a, const T& bitmap_b) {
           ret_val[i] = true;
         }
         it_a.next();
-      }
-      else /*if (b_end < a_begin)*/ {
+      } else { /*if (b_end < a_begin)*/
         for (std::size_t i = b_begin; i < b_end; ++i) {
           assert(i < ret_val.size());
           // Make sure, no bits are set more than once.
@@ -240,7 +237,8 @@ bitwise_xor(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_xor_iter(const T& bitmap_a, const T& bitmap_b) {
+bitwise_xor_iter(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto xor_it = dtl::bitwise_xor_it(bitmap_a.scan_it(), bitmap_b.it());
 //  auto it_a = bitmap_a.scan_it();
@@ -261,7 +259,8 @@ bitwise_xor_iter(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_xor_re(const T& bitmap_a, const T& bitmap_b) {
+bitwise_xor_re(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto it_a = bitmap_a.scan_it();
   auto it_b = bitmap_b.it();
@@ -280,13 +279,11 @@ bitwise_xor_re(const T& bitmap_a, const T& bitmap_b) {
       }
       if (a_end < b_begin) {
         it_a.next();
-      }
-      else {
+      } else {
         it_a.skip_to(b_end);
         it_b.next();
       }
-    }
-    else if (b_begin < a_begin) {
+    } else if (b_begin < a_begin) {
       const auto end = std::min(b_end, a_begin);
       for (std::size_t i = b_begin; i < end; ++i) {
         // Make sure, no bits are set more than once.
@@ -295,13 +292,11 @@ bitwise_xor_re(const T& bitmap_a, const T& bitmap_b) {
       }
       if (b_end < a_begin) {
         it_b.next();
-      }
-      else {
+      } else {
         it_b.skip_to(a_end);
         it_a.next();
       }
-    }
-    else /* a_begin == b_begin */ {
+    } else { /* a_begin == b_begin */
       const auto end_min = (a_end < b_end) ? a_end : b_end;
       it_a.skip_to(end_min);
       it_b.skip_to(end_min);
@@ -330,7 +325,8 @@ bitwise_xor_re(const T& bitmap_a, const T& bitmap_b) {
 //===----------------------------------------------------------------------===//
 template<typename T>
 dtl::bitmap
-bitwise_xor_re_iter(const T& bitmap_a, const T& bitmap_b) {
+bitwise_xor_re_iter(const T& bitmap_a, const T& bitmap_b)
+{
   dtl::bitmap ret_val(bitmap_a.size());
   auto xor_it = dtl::bitwise_xor_it(bitmap_a.scan_it(), bitmap_b.it());
 //  auto it_a = bitmap_a.scan_it();

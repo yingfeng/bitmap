@@ -16,7 +16,8 @@ template<typename T>
 class api_random_access_test : public ::testing::Test {};
 TYPED_TEST_CASE(api_random_access_test, types_under_test);
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_random_access_test, empty_bitmap) {
+TYPED_TEST(api_random_access_test, empty_bitmap)
+{
   using T = TypeParam;
 
   for (auto n_log2 = 10; n_log2 <= 12; ++n_log2) {
@@ -32,7 +33,8 @@ TYPED_TEST(api_random_access_test, empty_bitmap) {
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_random_access_test, sparse_uniform_bitmap) {
+TYPED_TEST(api_random_access_test, sparse_uniform_bitmap)
+{
   using T = TypeParam;
 
   for (auto n_log2 = 10; n_log2 <= 10; ++n_log2) {
@@ -58,7 +60,8 @@ TYPED_TEST(api_random_access_test, sparse_uniform_bitmap) {
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_random_access_test, dense_uniform_bitmap) {
+TYPED_TEST(api_random_access_test, dense_uniform_bitmap)
+{
   using T = TypeParam;
 
   for (auto n_log2 = 10; n_log2 <= 10; ++n_log2) {
@@ -77,7 +80,8 @@ TYPED_TEST(api_random_access_test, dense_uniform_bitmap) {
   }
 }
 //===----------------------------------------------------------------------===//
-TYPED_TEST(api_random_access_test, bitmap_with_a_single_set_bit) {
+TYPED_TEST(api_random_access_test, bitmap_with_a_single_set_bit)
+{
   // This test aims for finding bugs in WAH variants that perform dirty bit
   // piggybacking.
   using T = TypeParam;
@@ -99,13 +103,13 @@ TYPED_TEST(api_random_access_test, bitmap_with_a_single_set_bit) {
           std::cout << b << std::endl;
         }
         ASSERT_EQ(a, b)
-                      << "Point lookup failed at index i=" << i
-                          << " with k=" << k
-                          << ". - Expected '" << (a ? "true" : "false")
-                          << "' but got '" << (b ? "true" : "false") << "'.\n"
-                          << "Bitmap info:\n"
-                          << t.info()
-                          << std::endl;
+            << "Point lookup failed at index i=" << i
+            << " with k=" << k
+            << ". - Expected '" << (a ? "true" : "false")
+            << "' but got '" << (b ? "true" : "false") << "'.\n"
+            << "Bitmap info:\n"
+            << t.info()
+            << std::endl;
       }
     }
   }

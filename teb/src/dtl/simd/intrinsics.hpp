@@ -17,29 +17,26 @@ namespace
 {
 
 template<typename Tv, class enable = void>
-struct deduce_mask
-{
-    using type = bool;
+struct deduce_mask {
+  using type = bool;
 };
 
 template<typename Tv>
-struct deduce_mask<Tv, typename std::enable_if<!std::is_integral<Tv>::value>::type>
-{
-    using type = typename Tv::mask;
+struct deduce_mask<Tv, typename std::enable_if<!std::is_integral<Tv>::value>::type> {
+  using type = typename Tv::mask;
 };
 
 }
 
 /// Base class for vectorized function objects. (= functions that operate on packed data)
 template<typename Tp, typename Tv = Tp, typename Ta = Tp, typename Tr = Tv>
-struct vector_fn
-{
-    using value_type = Tp; // the primitive (scalar) type, e.g., u32.
-    using vector_type = Tv; // the native vector type, e.g. __m256i
-    using argument_type = Ta; // TODO
-    using result_type = Tr; // the return type (defaults to the vector type) // TODO: remove?
-    // Note: the mask is of type bool, iff the vector type is a fundamental type
-    //using mask_type = typename deduce_mask<Tv>::type;
+struct vector_fn {
+  using value_type = Tp; // the primitive (scalar) type, e.g., u32.
+  using vector_type = Tv; // the native vector type, e.g. __m256i
+  using argument_type = Ta; // TODO
+  using result_type = Tr; // the return type (defaults to the vector type) // TODO: remove?
+  // Note: the mask is of type bool, iff the vector type is a fundamental type
+  //using mask_type = typename deduce_mask<Tv>::type;
 };
 
 

@@ -18,12 +18,12 @@ namespace bits
 __forceinline__ __device__
 u32 pop_count(u32 a)
 {
-    return __popc(a);
+  return __popc(a);
 }
 __forceinline__ __device__
 u32 pop_count(u64 a)
 {
-    return __popcll(a);
+  return __popcll(a);
 }
 #else
 //__forceinline__
@@ -35,7 +35,7 @@ u32 pop_count(u64 a)
 __forceinline__
 constexpr auto pop_count(u64 a)
 {
-    return __builtin_popcountll(a);
+  return __builtin_popcountll(a);
 }
 #endif
 
@@ -45,13 +45,13 @@ constexpr auto pop_count(u64 a)
 __forceinline__ __device__
 u64 lz_count(u32 a)
 {
-    return __clz(a);
+  return __clz(a);
 }
 #else
 __forceinline__
 constexpr auto lz_count(u32 a)
 {
-    return __builtin_clz(a);
+  return __builtin_clz(a);
 }
 #endif
 
@@ -60,13 +60,13 @@ constexpr auto lz_count(u32 a)
 __forceinline__ __device__
 u64 lz_count(u64 a)
 {
-    return __clzll(a);
+  return __clzll(a);
 }
 #else
 __forceinline__
 constexpr auto lz_count(u64 a)
 {
-    return __builtin_clzll(a);
+  return __builtin_clzll(a);
 }
 #endif
 
@@ -75,52 +75,52 @@ constexpr auto lz_count(u64 a)
 inline auto
 tz_count(u8 a)
 {
-    return __builtin_ctz(u32(a));
+  return __builtin_ctz(u32(a));
 }
 inline auto
 tz_count(u16 a)
 {
-    return __builtin_ctz(a);
+  return __builtin_ctz(a);
 }
 inline auto
 tz_count(u32 a)
 {
-    return __builtin_ctz(a);
+  return __builtin_ctz(a);
 }
 
 /// counts the number of tailing zeros
 inline auto
 tz_count(u64 a)
 {
-    return __builtin_ctzll(a);
+  return __builtin_ctzll(a);
 }
 
 #if defined(__BMI__)
 inline u32
 blsr_u32(u32 a)
 {
-    return _blsr_u32(a);
+  return _blsr_u32(a);
 };
 inline u32
 blsr(u32 a)
 {
-    return _blsr_u32(a);
+  return _blsr_u32(a);
 };
 inline u64
 blsr(u64 a)
 {
-    return _blsr_u64(a);
+  return _blsr_u64(a);
 };
 inline u64
 blsr_u64(u64 a)
 {
-    return _blsr_u64(a);
+  return _blsr_u64(a);
 };
 #else
 inline u32
 blsr_u32(u32 a)
 {
-    return (a - 1) & a;
+  return (a - 1) & a;
 };
 #endif
 
@@ -130,9 +130,9 @@ inline u32
 extract(u32 a, u32 start, u32 len)
 {
 #if defined(__BMI__)
-    return _bextr_u32(a, start, len);
+  return _bextr_u32(a, start, len);
 #else
-    return (a >> start) & ((u32(1) << len) - 1);
+  return (a >> start) & ((u32(1) << len) - 1);
 #endif
 }
 
@@ -141,9 +141,9 @@ inline u64
 extract(u64 a, u32 start, u32 len)
 {
 #if defined(__BMI__)
-    return _bextr_u64(a, start, len);
+  return _bextr_u64(a, start, len);
 #else
-    return (a >> start) & ((u64(1) << len) - 1);
+  return (a >> start) & ((u64(1) << len) - 1);
 #endif
 }
 
@@ -152,35 +152,35 @@ __forceinline__ __host__ __device__
 constexpr u1
 bit_test(u8 a, u32 i)
 {
-    return a & (u8(1) << i);
+  return a & (u8(1) << i);
 }
 
 __forceinline__ __host__ __device__
 constexpr u1
 bit_test(u16 a, u32 i)
 {
-    return a & (u16(1) << i);
+  return a & (u16(1) << i);
 }
 
 __forceinline__ __host__ __device__
 constexpr u1
 bit_test(u32 a, u32 i)
 {
-    return a & (u32(1) << i);
+  return a & (u32(1) << i);
 }
 
 __forceinline__ __host__ __device__
 constexpr u1
 bit_test(u64 a, u32 i)
 {
-    return a & (u64(1) << i);
+  return a & (u64(1) << i);
 //  return (a >> i) & u64(1);
 }
 __forceinline__ __host__ __device__
 constexpr u1
 bit_test64(u64 a, u32 i)
 {
-    return a & (u64(1) << i);
+  return a & (u64(1) << i);
 }
 
 

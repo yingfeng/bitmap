@@ -75,65 +75,65 @@ using part_range_list_16 = dtl::part<dtl::range_list<$u16>, 1ull << 16>;
 //===----------------------------------------------------------------------===//
 // The types for which we want to run the API tests.
 using types_under_test = ::testing::Types<
-    // Tree-encoded Bitmap
-    teb_v2,
+                         // Tree-encoded Bitmap
+                         teb_v2,
 
-    // A Tree-encoded Bitmap implementation which allows to enable/disable the
-    // space optimizations described in the paper.
-    // teb_o0,
-    // teb_o1,
-    // teb_o2,
-    // teb_o3,
+                         // A Tree-encoded Bitmap implementation which allows to enable/disable the
+                         // space optimizations described in the paper.
+                         // teb_o0,
+                         // teb_o1,
+                         // teb_o2,
+                         // teb_o3,
 
-    // Competitors
-    plain_bitmap_32,
-    roaring_bitmap,
-    wah,
+                         // Competitors
+                         plain_bitmap_32,
+                         roaring_bitmap,
+                         wah,
 
-    // Differential (EXPERIMENTAL)
-    diff_teb_roaring,
-    diff_teb_wah,
-    diff_roaring_roaring,
-    diff_roaring_wah,
-    diff_wah_roaring,
-    diff_wah_wah,
+                         // Differential (EXPERIMENTAL)
+                         diff_teb_roaring,
+                         diff_teb_wah,
+                         diff_roaring_roaring,
+                         diff_roaring_wah,
+                         diff_wah_roaring,
+                         diff_wah_wah,
 
-    // Partitioned (EXPERIMENTAL)
-    part_8_teb,
-    part_run_8_teb,
-    part_8_wah,
-    part_run_8_wah,
+                         // Partitioned (EXPERIMENTAL)
+                         part_8_teb,
+                         part_run_8_teb,
+                         part_8_wah,
+                         part_run_8_wah,
 
-    // Partitioned + Differential (EXPERIMENTAL)
-    diff_part_8_teb,
-    part_8_diff_teb,
-    // EXPERIMENTAL
-    dtl::uah8,
-    dtl::uah16,
-    dtl::uah32,
-    dtl::uah64,
-    dtl::uah_skip<u8, 2>, // Skip distance is intentionally chosen small, as the bitmaps in the test are also rather small.
-    dtl::uah_skip<u16, 2>,
-    dtl::uah_skip<u32, 2>,
-    dtl::uah_skip<u64, 2>,
-    dtl::xah8,
-    dtl::xah16,
-    dtl::xah32,
-    dtl::xah64,
-    dtl::xah_skip<u8, 2>, // Skip distance is intentionally chosen small, as the bitmaps in the test are also rather small.
-    dtl::xah_skip<u16, 2>,
-    dtl::xah_skip<u32, 2>,
-    dtl::xah_skip<u64, 2>,
-    position_list_32,
-    part_position_list_8,
-    part_position_list_16,
-    range_list_32,
-    part_range_list_8,
-    part_range_list_16,
-    dtl::bbc,
-    dtl::concise,
+                         // Partitioned + Differential (EXPERIMENTAL)
+                         diff_part_8_teb,
+                         part_8_diff_teb,
+                         // EXPERIMENTAL
+                         dtl::uah8,
+                         dtl::uah16,
+                         dtl::uah32,
+                         dtl::uah64,
+                         dtl::uah_skip<u8, 2>, // Skip distance is intentionally chosen small, as the bitmaps in the test are also rather small.
+                         dtl::uah_skip<u16, 2>,
+                         dtl::uah_skip<u32, 2>,
+                         dtl::uah_skip<u64, 2>,
+                         dtl::xah8,
+                         dtl::xah16,
+                         dtl::xah32,
+                         dtl::xah64,
+                         dtl::xah_skip<u8, 2>, // Skip distance is intentionally chosen small, as the bitmaps in the test are also rather small.
+                         dtl::xah_skip<u16, 2>,
+                         dtl::xah_skip<u32, 2>,
+                         dtl::xah_skip<u64, 2>,
+                         position_list_32,
+                         part_position_list_8,
+                         part_position_list_16,
+                         range_list_32,
+                         part_range_list_8,
+                         part_range_list_16,
+                         dtl::bbc,
+                         dtl::concise,
 
-    dtl::bah,
-    dtl::part<dtl::bah, 1ull << 16>
-    >;
+                         dtl::bah,
+                         dtl::part<dtl::bah, 1ull << 16>
+                         >;
 //===----------------------------------------------------------------------===//

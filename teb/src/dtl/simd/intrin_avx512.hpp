@@ -19,69 +19,68 @@ namespace internal
 namespace avx512
 {
 
-struct mask16
-{
-    __mmask16 data;
-    __forceinline__ u1 all() const
-    {
-        return data == __mmask16(-1);
-    };
-    __forceinline__ u1 any() const
-    {
-        return data != __mmask16(0);
-    };
-    __forceinline__ u1 none() const
-    {
-        return data == __mmask16(0);
-    };
-    __forceinline__ void set(u1 value)
-    {
-        data = __mmask16(0) - value;
-    }
-    __forceinline__ void set(u64 idx, u1 value)
-    {
-        data = __mmask16(1) << idx;
-    }
-    __forceinline__ void set_from_int(u64 int_bitmask)
-    {
-        data = int_bitmask;
-    };
-    __forceinline__ u1 get(u64 idx) const
-    {
-        return (data & (__mmask16(1) << idx)) != __mmask16(0);
-    }
-    __forceinline__ mask16 bit_and(const mask16& o) const
-    {
-        return mask16 { _mm512_kand(data, o.data) };
-    }
-    __forceinline__ mask16 bit_or(const mask16& o) const
-    {
-        return mask16 { _mm512_kor(data, o.data) };
-    }
-    __forceinline__ mask16 bit_xor(const mask16& o) const
-    {
-        return mask16 { _mm512_kxor(data, o.data) };
-    }
-    __forceinline__ mask16 bit_not() const
-    {
-        return mask16 { _mm512_knot(data) };
-    }
+struct mask16 {
+  __mmask16 data;
+  __forceinline__ u1 all() const
+  {
+    return data == __mmask16(-1);
+  };
+  __forceinline__ u1 any() const
+  {
+    return data != __mmask16(0);
+  };
+  __forceinline__ u1 none() const
+  {
+    return data == __mmask16(0);
+  };
+  __forceinline__ void set(u1 value)
+  {
+    data = __mmask16(0) - value;
+  }
+  __forceinline__ void set(u64 idx, u1 value)
+  {
+    data = __mmask16(1) << idx;
+  }
+  __forceinline__ void set_from_int(u64 int_bitmask)
+  {
+    data = int_bitmask;
+  };
+  __forceinline__ u1 get(u64 idx) const
+  {
+    return (data & (__mmask16(1) << idx)) != __mmask16(0);
+  }
+  __forceinline__ mask16 bit_and(const mask16& o) const
+  {
+    return mask16 { _mm512_kand(data, o.data) };
+  }
+  __forceinline__ mask16 bit_or(const mask16& o) const
+  {
+    return mask16 { _mm512_kor(data, o.data) };
+  }
+  __forceinline__ mask16 bit_xor(const mask16& o) const
+  {
+    return mask16 { _mm512_kxor(data, o.data) };
+  }
+  __forceinline__ mask16 bit_not() const
+  {
+    return mask16 { _mm512_knot(data) };
+  }
 
-    __forceinline__ $u64
-    to_positions($u32* positions, $u32 offset) const
-    {
-        if (data == 0) return 0;
-        static const __m512i sequence = _mm512_set_epi32(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
-        const __m512i seq = _mm512_add_epi64(sequence, _mm512_set1_epi32(offset));
-        _mm512_mask_compressstoreu_epi32(positions, data, seq);
-        return dtl::bits::pop_count(static_cast<u32>(data));
-    }
+  __forceinline__ $u64
+  to_positions($u32* positions, $u32 offset) const
+  {
+    if (data == 0) return 0;
+    static const __m512i sequence = _mm512_set_epi32(15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0);
+    const __m512i seq = _mm512_add_epi64(sequence, _mm512_set1_epi32(offset));
+    _mm512_mask_compressstoreu_epi32(positions, data, seq);
+    return dtl::bits::pop_count(static_cast<u32>(data));
+  }
 
-    __forceinline__ $u64
-    to_int() const
-    {
-        return data;
-    }
+  __forceinline__ $u64
+  to_int() const
+  {
+    return data;
+  }
 };
 
 //    __mmask8
@@ -99,51 +98,45 @@ using mask16 = internal::avx512::mask16;
 // --- vector types
 
 template<>
-struct vs<$i32, 8> : base<$i32, 8>
-{
-    using type = __m256i;
-    using mask_type = mask16;
-    type data;
+struct vs<$i32, 8> : base<$i32, 8> {
+  using type = __m256i;
+  using mask_type = mask16;
+  type data;
 };
 
 template<>
-struct vs<$u32, 8> : base<$u32, 8>
-{
-    using type = __m256i;
-    using mask_type = mask16;
-    type data;
+struct vs<$u32, 8> : base<$u32, 8> {
+  using type = __m256i;
+  using mask_type = mask16;
+  type data;
 };
 
 template<>
-struct vs<$i32, 16> : base<$i32, 16>
-{
-    using type = __m512i;
-    using mask_type = mask16;
-    type data;
+struct vs<$i32, 16> : base<$i32, 16> {
+  using type = __m512i;
+  using mask_type = mask16;
+  type data;
 };
 
 template<>
-struct vs<$u32, 16> : base<$u32, 16>
-{
-    using type = __m512i;
-    using mask_type = mask16;
-    type data;
+struct vs<$u32, 16> : base<$u32, 16> {
+  using type = __m512i;
+  using mask_type = mask16;
+  type data;
 };
 
 template<>
-struct vs<$i64, 8> : base<$i64, 8>
-{
-    using type = __m512i;
-    using mask_type = mask16;
-    type data;
+struct vs<$i64, 8> : base<$i64, 8> {
+  using type = __m512i;
+  using mask_type = mask16;
+  type data;
 };
 
 template<>
-struct vs<$u64, 8> : base<$u64, 8>
-{
-    using type = __m512i;
-    using mask_type = mask16;
-    type data;
+struct vs<$u64, 8> : base<$u64, 8> {
+  using type = __m512i;
+  using mask_type = mask16;
+  type data;
 };
 
 
@@ -234,39 +227,35 @@ __GENERATE($u64, 8, __m512i, __m512i, _mm512_i64gather_epi64, _mm512_mask_i64gat
 // --- Store
 // Store
 template<>
-struct store<$i32, __m512i> : vector_fn<$i32, __m512i>
-{
-    __forceinline__ void operator()(__m512i* mem_addr, const __m512i& what) const noexcept
-    {
-        _mm512_store_si512(mem_addr, what);
-    }
+struct store<$i32, __m512i> : vector_fn<$i32, __m512i> {
+  __forceinline__ void operator()(__m512i* mem_addr, const __m512i& what) const noexcept
+  {
+    _mm512_store_si512(mem_addr, what);
+  }
 };
 
 template<>
-struct storeu<$i32, __m512i> : vector_fn<$i32, __m512i>
-{
-    __forceinline__ void operator()($i32* mem_addr, const __m512i& what) const noexcept
-    {
-        _mm512_storeu_si512(reinterpret_cast<__m512i*>(mem_addr), what);
-    }
+struct storeu<$i32, __m512i> : vector_fn<$i32, __m512i> {
+  __forceinline__ void operator()($i32* mem_addr, const __m512i& what) const noexcept
+  {
+    _mm512_storeu_si512(reinterpret_cast<__m512i*>(mem_addr), what);
+  }
 };
 
 template<>
-struct store<$u32, __m512i> : vector_fn<$u32, __m512i>
-{
-    __forceinline__ void operator()(__m512i* mem_addr, const __m512i& what) const noexcept
-    {
-        _mm512_store_si512(mem_addr, what);
-    }
+struct store<$u32, __m512i> : vector_fn<$u32, __m512i> {
+  __forceinline__ void operator()(__m512i* mem_addr, const __m512i& what) const noexcept
+  {
+    _mm512_store_si512(mem_addr, what);
+  }
 };
 
 template<>
-struct storeu<$u32, __m512i> : vector_fn<$u32, __m512i>
-{
-    __forceinline__ void operator()($u32* mem_addr, const __m512i& what) const noexcept
-    {
-        _mm512_storeu_si512(reinterpret_cast<__m512i*>(mem_addr), what);
-    }
+struct storeu<$u32, __m512i> : vector_fn<$u32, __m512i> {
+  __forceinline__ void operator()($u32* mem_addr, const __m512i& what) const noexcept
+  {
+    _mm512_storeu_si512(reinterpret_cast<__m512i*>(mem_addr), what);
+  }
 };
 
 
@@ -300,33 +289,31 @@ __GENERATE($u64, 8, __m512i, __m512i, _mm512_i64scatter_epi64, _mm512_mask_i64sc
 
 // --- Compress
 template<>
-struct compress<$i32, __m512i> : vector_fn<$i32, __m512i>
-{
-    __forceinline__ __m512i operator()(const __m512i& src, const mask16& m) const noexcept
-    {
-        return _mm512_maskz_compress_epi32(m.data, src);
-    }
+struct compress<$i32, __m512i> : vector_fn<$i32, __m512i> {
+  __forceinline__ __m512i operator()(const __m512i& src, const mask16& m) const noexcept
+  {
+    return _mm512_maskz_compress_epi32(m.data, src);
+  }
 
-    __forceinline__ __m512i operator()(const __m512i& src, const mask16& m, uint32_t& pop_cnt) const noexcept
-    {
-        pop_cnt = dtl::bits::pop_count(m.data);
-        return _mm512_maskz_compress_epi32(m.data, src);
-    }
+  __forceinline__ __m512i operator()(const __m512i& src, const mask16& m, uint32_t& pop_cnt) const noexcept
+  {
+    pop_cnt = dtl::bits::pop_count(m.data);
+    return _mm512_maskz_compress_epi32(m.data, src);
+  }
 };
 
 template<>
-struct compress<$u32, __m512i> : vector_fn<$u32, __m512i>
-{
-    __forceinline__ __m512i operator()(const __m512i& src, const mask16& m) const noexcept
-    {
-        return _mm512_maskz_compress_epi32(m.data, src);
-    }
+struct compress<$u32, __m512i> : vector_fn<$u32, __m512i> {
+  __forceinline__ __m512i operator()(const __m512i& src, const mask16& m) const noexcept
+  {
+    return _mm512_maskz_compress_epi32(m.data, src);
+  }
 
-    __forceinline__ __m512i operator()(const __m512i& src, const mask16& m, uint32_t& pop_cnt) const noexcept
-    {
-        pop_cnt = dtl::bits::pop_count(m.data);
-        return _mm512_maskz_compress_epi32(m.data, src);
-    }
+  __forceinline__ __m512i operator()(const __m512i& src, const mask16& m, uint32_t& pop_cnt) const noexcept
+  {
+    pop_cnt = dtl::bits::pop_count(m.data);
+    return _mm512_maskz_compress_epi32(m.data, src);
+  }
 };
 
 
@@ -353,28 +340,28 @@ struct Op<Tp, Tv, Ta> : vector_fn<Tp, Tv, Ta> {        \
 inline __m512i
 _mm512_mul_epi64(const __m512i& lhs, const __m512i& rhs)
 {
-    const __m512i hi_lhs = _mm512_srli_epi64(lhs, 32);
-    const __m512i hi_rhs = _mm512_srli_epi64(rhs, 32);
-    const __m512i t1 = _mm512_mul_epu32(lhs, hi_rhs);
-    const __m512i t2 = _mm512_mul_epu32(lhs, rhs);
-    const __m512i t3 = _mm512_mul_epu32(hi_lhs, rhs);
-    const __m512i t4 = _mm512_add_epi64(_mm512_slli_epi64(t3, 32), t2);
-    const __m512i t5 = _mm512_add_epi64(_mm512_slli_epi64(t1, 32), t4);
-    return t5;
+  const __m512i hi_lhs = _mm512_srli_epi64(lhs, 32);
+  const __m512i hi_rhs = _mm512_srli_epi64(rhs, 32);
+  const __m512i t1 = _mm512_mul_epu32(lhs, hi_rhs);
+  const __m512i t2 = _mm512_mul_epu32(lhs, rhs);
+  const __m512i t3 = _mm512_mul_epu32(hi_lhs, rhs);
+  const __m512i t4 = _mm512_add_epi64(_mm512_slli_epi64(t3, 32), t2);
+  const __m512i t5 = _mm512_add_epi64(_mm512_slli_epi64(t1, 32), t4);
+  return t5;
 }
 
 inline __m512i
 _mm512_mask_mul_epi64(const __m512i& src, const __mmask16 k,
                       const __m512i& lhs, const __m512i& rhs)
 {
-    const __m512i hi_lhs = _mm512_srli_epi64(lhs, 32);
-    const __m512i hi_rhs = _mm512_srli_epi64(rhs, 32);
-    const __m512i t1 = _mm512_mul_epu32(lhs, hi_rhs);
-    const __m512i t2 = _mm512_mul_epu32(lhs, rhs);
-    const __m512i t3 = _mm512_mul_epu32(hi_lhs, rhs);
-    const __m512i t4 = _mm512_add_epi64(_mm512_slli_epi64(t3, 32), t2);
-    const __m512i t5 = _mm512_add_epi64(_mm512_slli_epi64(t1, 32), t4);
-    return _mm512_mask_blend_epi64(k, src, t5);
+  const __m512i hi_lhs = _mm512_srli_epi64(lhs, 32);
+  const __m512i hi_rhs = _mm512_srli_epi64(rhs, 32);
+  const __m512i t1 = _mm512_mul_epu32(lhs, hi_rhs);
+  const __m512i t2 = _mm512_mul_epu32(lhs, rhs);
+  const __m512i t3 = _mm512_mul_epu32(hi_lhs, rhs);
+  const __m512i t4 = _mm512_add_epi64(_mm512_slli_epi64(t3, 32), t2);
+  const __m512i t5 = _mm512_add_epi64(_mm512_slli_epi64(t1, 32), t4);
+  return _mm512_mask_blend_epi64(k, src, t5);
 }
 
 
